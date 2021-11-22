@@ -1,0 +1,37 @@
+containers:
+  my-container:
+    image: alpine:3.11.3
+  fastify-ts-base:
+    image: node:14.3.0
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+      - type: cache
+        name: node_modules
+        container: /code/node_modules
+    working_directory: /code
+
+
+tasks:
+
+  install:
+    description: Install fastify application
+    run:
+      container: fastify-ts-base
+      command: npm install
+
+  start:dev:
+    description: Run fastify application --dev
+    run:
+      environment:
+        PORT: 3030
+        DB_HOST: fastifydemoapp.cv7rlmmgw3kh.ap-northeast-1.rds.amazonaws.com
+        DB_PORT: 5432
+        DB_USER: postgres
+        DB_DATABASE: fastifydemoapp
+        DB_PASSWORD: postgres
+      container: fastify-ts-base
+      command: npm run dev
+      ports:
+        - 3030:3030
