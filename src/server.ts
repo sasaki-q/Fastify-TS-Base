@@ -1,12 +1,12 @@
 import fastify, { FastifyInstance } from "fastify";
 import fastifyCors from "fastify-cors";
 import { IncomingMessage, Server, ServerResponse } from "http";
+import { pino } from "pino"
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify({
-    logger: {
-        level: 'error',
-        prettyPrint: true,
-    }
+    logger: pino({
+        level: 'info',
+    })
 })
 
 server.register(fastifyCors, {
